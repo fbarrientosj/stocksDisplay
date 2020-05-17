@@ -63,7 +63,6 @@ export default function Exchange(props) {
             <td> {exchange['cantidadAcciones']} </td>
             <td> {Math.round((Math.abs(exchange['volumenTotal'] / sumAcciones) + Number.EPSILON + Number.EPSILON) * 10000) / 10000} </td>
             
-            
         </tr>
         ))
         }
