@@ -9,6 +9,7 @@ export default function Exchange(props) {
     var info = JSON.parse(props.data);
     info = Object.values(info);
     let exchanges = props.exchangeData
+    let numberExchanges = exchanges.length;
     let stats = []
     let sumAcciones = 0
     exchanges.forEach(function(exchange) {
@@ -37,6 +38,7 @@ export default function Exchange(props) {
     <div>
         <br></br>
         <h2>Información de mercados</h2>
+  <h3>En este visor se muestran {numberExchanges} bolsas</h3>
         <br></br>
         <table className="table"> 
     <thead>
@@ -59,7 +61,8 @@ export default function Exchange(props) {
             <td> {exchange['volumenCompra']} </td>
             <td> {exchange['volumenVenta']} </td>      
             <td> {exchange['cantidadAcciones']} </td>
-            <td> {Math.abs(exchange['volumenTotal'] / sumAcciones)} </td>
+            <td> {Math.round((Math.abs(exchange['volumenTotal'] / sumAcciones) + Number.EPSILON + Number.EPSILON) * 10000) / 10000} </td>
+            
             
         </tr>
         ))
