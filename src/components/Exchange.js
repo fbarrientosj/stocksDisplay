@@ -35,7 +35,9 @@ export default function Exchange(props) {
 
   return (
     <div>
+        <br></br>
         <h2>Información de mercados</h2>
+        <br></br>
         <table className="table"> 
     <thead>
       <tr className="table">
@@ -57,7 +59,8 @@ export default function Exchange(props) {
             <td> {exchange['volumenCompra']} </td>
             <td> {exchange['volumenVenta']} </td>      
             <td> {exchange['cantidadAcciones']} </td>
-            <td> {Math.abs(exchange['volumenTotal'] / sumAcciones)} </td>
+            <td> {Math.round((Math.abs(exchange['volumenTotal'] / sumAcciones) + Number.EPSILON) * 100) / 100} </td>
+            
         </tr>
         ))
         }

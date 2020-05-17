@@ -26,7 +26,7 @@ export default function MainChart(props) {
   return (
     <div>
       <LineChart width={500} height={300} data={data}>
-        <XAxis dataKey="tima" label={{value:'tiempo'}}/>
+        <XAxis dataKey="tima" label={{value:'Tiempo'}}/>
         <YAxis  label={{ value:"Precio", angle: 90, position:"insideLeft" }}/>
         <Tooltip/>
 

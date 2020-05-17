@@ -7,7 +7,9 @@ export default function InfoStock(props) {
     info = Object.values(info);
   return (
     <div>
-    <h1> Detalle estático Bursatil </h1>
+        <br></br>
+    <h2> Detalle estático Bursatil </h2>
+    <br></br>
     <table className="table"> 
     <thead>
       <tr className="table">

@@ -91,20 +91,35 @@ function App() {
     bolsas.map((bolsa) => {
       bolsa.stocks = []
       setexchange(currentData => [...currentData, bolsa])})
-    }
-    )
+    })
+  
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
 
+    (async () => {
+      console.log('1');
+      await sleep(500);
+      console.log('2');
+      await sleep(1900);
+      startSocket();
+    })();
+  
+  
 }, [])
   var graph = false; 
   
     return(
+      
     <div>
+      
+      <br></br>
+      <br></br>
       <h1> Bienvenido al visualizador de Acciones! </h1>
+      <br></br>
       <hr></hr>
       <div>
       <button onClick={() => disconnectSocket()}> Desconectar socket</button>
       <button onClick={() => startSocket()}> conectar socket</button>
-      <p>Declaimer: Reconectar el socket demora aproximadamente 5 segundos :)</p>
+      <br></br>
       </div>
       <hr></hr>
       <div>
@@ -116,17 +131,25 @@ function App() {
       <div>
         <InfoStock data={stockCompanies}/>
       </div>
-      <h2>Gráficos de variación de precio</h2>
+      <br></br>
+      <hr></hr>
+      <h1>Gráficos de variación de precio</h1>
+      <br></br>
+      <hr></hr>
       <div>
       {stockCompanies.map((company) => (
         <div className="chart"> 
-        <h1 className="title"> {company.ticker} </h1>
+        <h3 className="title"> {company.ticker} </h3>
           <div> 
             <MainChart key={company.ticker} data={stock[company.ticker]} />
+            <br></br>
+            <hr></hr>
           </div>
         </div>
+        
         ) )     
       }
+      
     </div>
     </div>
     )

@@ -20,6 +20,7 @@ export default function StockStats(props) {
     <div>
     
     <h3> Actualmente se muestra la información de {info.length} acciones</h3>
+    <br></br>
         <table className="table"> 
     <thead>
       <tr className="table">
@@ -42,7 +43,7 @@ export default function StockStats(props) {
             <td> {k[stock['ticker']] ? k[stock['ticker']]['max'] : 0} </td>
             <td> {k[stock['ticker']] ? k[stock['ticker']]['min'] : 0} </td>
             <td> {k[stock['ticker']] ? k[stock['ticker']]['ultimo'] : 0} </td>
-            <td> {k[stock['ticker']] ? k[stock['ticker']]['variacion'] : 0} </td>
+            <td> {k[stock['ticker']] ? Math.round((k[stock['ticker']]['variacion'] + Number.EPSILON) * 10000) / 10000 : 0} </td>
             <td> {stock['volumenCompra']} </td>
             <td> {stock['volumenVenta']} </td>
         </tr>
