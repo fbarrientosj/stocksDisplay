@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import MainChart from './components/MainChart';
 import StockStats from './components/StockStats';
 import Exchange from './components/Exchange';
-import InfoStock from './components/InfoStock';
 
 const protocolo = "wss://";
 const servidor = "le-18262636.bitzonte.com";
@@ -30,7 +29,6 @@ function App() {
   }
  
   const startSocket = () => {
-    socket.connect()
     socket.on('UPDATE', current => {
 
       var data = {
@@ -38,6 +36,8 @@ function App() {
         value: current.value
       }
       setstock(state => ({...state, [current.ticker]: [...(state[current.ticker] || []), data]}));
+      setstats(state => 
+        ({...state, [current.ticker]: {...state[current.ticker], prices : state[current.ticker]['pices'].push(current.value)}}));
     });
 
     socket.on('BUY', current=> {
@@ -96,27 +96,31 @@ function App() {
 
 }, [])
   var graph = false; 
-  
+  if (graph){
+  return (
+    <div>
+      {stockCompanies.map((company) => (
+        <div className="chart"> 
+        <h1 className="title"> {company.ticker} </h1>
+          <div> 
+            <MainChart key={company.ticker} data={stock[company.ticker]} />
+          </div>
+        </div>
+        ) )     
+      }
+    </div>
+  );}
+  else{
     return(
     <div>
-      <h1> Bienvenido al visualizador de Acciones! </h1>
-      <hr></hr>
-      <div>
       <button onClick={() => disconnectSocket()}> Desconectar socket</button>
       <button onClick={() => startSocket()}> conectar socket</button>
-      <p>Declaimer: Reconectar el socket demora aproximadamente 5 segundos :)</p>
-      </div>
-      <hr></hr>
       <div>
-        <StockStats data={JSON.stringify(stats)} realData={stock}/>
+        <StockStats data={JSON.stringify(stats)}/>
       </div>
       <div>
         <Exchange data={JSON.stringify(stats)} exchangeData={exchange}/>
       </div>
-      <div>
-        <InfoStock data={stockCompanies}/>
-      </div>
-      <h2>Gráficos de variación de precio</h2>
       <div>
       {stockCompanies.map((company) => (
         <div className="chart"> 
@@ -129,7 +133,7 @@ function App() {
       }
     </div>
     </div>
-    )
+    )}
 
 }
 

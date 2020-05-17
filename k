@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import MainChart from './components/MainChart';
 import StockStats from './components/StockStats';
 import Exchange from './components/Exchange';
-import InfoStock from './components/InfoStock';
 
 const protocolo = "wss://";
 const servidor = "le-18262636.bitzonte.com";
@@ -30,14 +29,14 @@ function App() {
   }
  
   const startSocket = () => {
-    socket.connect()
     socket.on('UPDATE', current => {
 
       var data = {
         time: current.time,
         value: current.value
       }
-      setstock(state => ({...state, [current.ticker]: [...(state[current.ticker] || []), data]}));
+      setstats(state => 
+        ({...state, [current.ticker]: {...state[current.ticker], prices : state[current.ticker]['pices'].push(data)}}));
     });
 
     socket.on('BUY', current=> {
@@ -77,7 +76,6 @@ function App() {
       'volumenVenta' : 0, 
       'numeroAcciones' : 0,
       'ticker': current.ticker,
-      'participacionMercado' : 0,
       'companyName': current.company_name,
       'pices': []}}));
       setstockCompanies(currentData => [...currentData, data[i]])
@@ -95,28 +93,35 @@ function App() {
     )
 
 }, [])
-  var graph = false; 
-  
-    return(
+  var graph = true; 
+  if (graph){
+  return (
     <div>
-      <h1> Bienvenido al visualizador de Acciones! </h1>
-      <hr></hr>
-      <div>
       <button onClick={() => disconnectSocket()}> Desconectar socket</button>
       <button onClick={() => startSocket()}> conectar socket</button>
-      <p>Declaimer: Reconectar el socket demora aproximadamente 5 segundos :)</p>
-      </div>
-      <hr></hr>
+      {Object.values(stats).map((company) => (
+        
+        <div className="chart"> 
+        <h1 className="title"> {company.ticker} </h1>
+          <div> 
+            <MainChart key={company.ticker} data={company.pices} />
+          </div>
+        </div>
+        ) )     
+      }
+    </div>
+  );}
+  else{
+    return(
+    <div>
+      <button onClick={() => disconnectSocket()}> Desconectar socket</button>
+      <button onClick={() => startSocket()}> conectar socket</button>
       <div>
-        <StockStats data={JSON.stringify(stats)} realData={stock}/>
+        <StockStats data={JSON.stringify(stats)}/>
       </div>
       <div>
         <Exchange data={JSON.stringify(stats)} exchangeData={exchange}/>
       </div>
-      <div>
-        <InfoStock data={stockCompanies}/>
-      </div>
-      <h2>Gráficos de variación de precio</h2>
       <div>
       {stockCompanies.map((company) => (
         <div className="chart"> 
@@ -129,7 +134,7 @@ function App() {
       }
     </div>
     </div>
-    )
+    )}
 
 }
 
