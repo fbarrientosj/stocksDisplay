@@ -99,7 +99,7 @@ function App() {
       console.log('1');
       await sleep(500);
       console.log('2');
-      await sleep(1900);
+      await sleep(2500);
       startSocket();
     })();
   
