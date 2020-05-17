@@ -34,7 +34,7 @@ function App() {
     socket.on('UPDATE', current => {
 
       var data = {
-        time: current.time,
+        time: new Date(current.time).toISOString().substr(11,5),
         value: current.value
       }
       setstock(state => ({...state, [current.ticker]: [...(state[current.ticker] || []), data]}));

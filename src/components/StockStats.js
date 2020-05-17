@@ -9,7 +9,13 @@ export default function StockStats(props) {
         let min = Math.min.apply(Math, props.realData[key].map(function(o) { return o.value; }))
         let max = Math.max.apply(Math, props.realData[key].map(function(o) { return o.value; }))
         let ultimo = props.realData[key][props.realData[key].length - 1].value
-        let variacion = (ultimo-props.realData[key][0].value) / props.realData[key][0].value
+        if (props.realData[key][props.realData[key].length - 2]){
+            var penultimo = props.realData[key][props.realData[key].length - 2].value
+        } else {
+            var penultimo = ultimo
+        }
+        
+        let variacion = (ultimo-penultimo) / penultimo
         k[key] = {}
         k[key]['min'] = min 
         k[key]['max'] = max 
@@ -40,10 +46,10 @@ export default function StockStats(props) {
         <tr>
             <td> {stock['ticker']} </td>
             <td> {Math.abs(stock['volumenTransado'])} </td>
-            <td> {k[stock['ticker']] ? k[stock['ticker']]['max'] : 0} </td>
-            <td> {k[stock['ticker']] ? k[stock['ticker']]['min'] : 0} </td>
-            <td> {k[stock['ticker']] ? k[stock['ticker']]['ultimo'] : 0} </td>
-            <td> {k[stock['ticker']] ? Math.round((k[stock['ticker']]['variacion'] + Number.EPSILON) * 10000) / 10000 : 0} </td>
+            <td> {k[stock['ticker']] ? k[stock['ticker']]['max']  : 0} USD </td>
+            <td> {k[stock['ticker']] ? k[stock['ticker']]['min'] : 0} USD </td>
+            <td> {k[stock['ticker']] ? k[stock['ticker']]['ultimo'] : 0} USD</td>
+            <td> {k[stock['ticker']] ? Math.round((k[stock['ticker']]['variacion'] + Number.EPSILON) * 100000) / 1000 : 0} % </td>
             <td> {stock['volumenCompra']} </td>
             <td> {stock['volumenVenta']} </td>
         </tr>
